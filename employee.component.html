@@ -1,0 +1,182 @@
+<div class="container">
+
+<mat-card>
+  <mat-toolbar color="accent">
+    <div align="center" style="color:white;text-align: right;">
+
+      CRUD operation in Angular 7 using Web api and Sql Database
+    </div>
+   
+  </mat-toolbar>
+<br><br>
+  <mat-card-content>
+    <form [formGroup]="employeeForm" (ngSubmit)="onFormSubmit()">
+
+            <table>
+              <tr>
+                <td class="tbl1">
+                  <mat-form-field class="demo-full-width">
+                    <input formControlName="EmpName" matTooltip="Enter Employee Name" matInput placeholder="Employee Name">
+                  </mat-form-field>
+                  <mat-error>
+                    <span *ngIf="!employeeForm.get('EmpName').value && employeeForm.get('EmpName').touched"></span>
+                  </mat-error>
+                </td>
+                <td class="tbl1">
+                  <mat-form-field class="demo-full-width">
+                    <input matInput [matDatepicker]="picker" matTooltip="Enter Date Of Birth" formControlName="DateOfBirth" placeholder="Choose Date Of Birth">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                  <mat-error>
+                    <span *ngIf="!employeeForm.get('DateOfBirth').value && employeeForm.get('DateOfBirth').touched"></span>
+                  </mat-error>
+                </td>
+                <td class="tbl1">
+                  <!-- <span>Is Active</span>
+                  <br><br>
+                  <mat-radio-group matTooltip="Is Active" [(value)]="employee.Role" formControlName="IsActive">
+                      <mat-radio-button [value]="false">No</mat-radio-button>&nbsp;&nbsp;
+                      <mat-radio-button [value]="true">Yes</mat-radio-button>
+                    </mat-radio-group>
+                  <mat-error>
+                    <span *ngIf="!employeeForm.get('IsActive').value && employeeForm.get('IsActive').touched"></span>
+                  </mat-error> -->
+
+
+                  <label id="example-radio-group-label">Is Active</label>
+                  <br>
+                  
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  [(value)]="selectedStatus">
+                  <mat-radio-button class="example-radio-button" *ngFor="let s of status" [value]="s">
+                    {{s}}
+                  </mat-radio-button>
+                </mat-radio-group>
+             
+
+                </td>
+
+              </tr>
+              <tr>
+                <td class="tbl1">
+                  
+                    
+                    <br>
+                    <select style="max-width: 50%;" class="input-field col s3"  id="ddrole">
+                      <option value="0">Select Role</option>
+                      <option value="1">Software Developer</option>
+                      <option value="2">HR Manager</option>
+                      <option value="3">SQL Develpoer</option>
+                    </select>
+
+                </td>
+                <td class="tbl1">
+                  <mat-form-field class="demo-full-width">
+                    <input matTooltip="Enter Address" formControlName="Address" matInput placeholder="Address">
+                  </mat-form-field>
+                  <mat-error>
+                    <span *ngIf="!employeeForm.get('Address').value && employeeForm.get('Address').touched"></span>
+                  </mat-error>
+                </td>
+                <td class="tbl1">
+                  <mat-form-field class="demo-full-width">
+                    <input formControlName="Dept" matTooltip="Enter Department" matInput placeholder="Deptartment">
+                  </mat-form-field>
+                  <mat-error>
+                    <span *ngIf="!employeeForm.get('Dept').value && employeeForm.get('Dept').touched"></span>
+                  </mat-error>
+                </td>
+              </tr>
+
+
+              <tr>
+                <td class="tbl1">
+                  <mat-form-field class="demo-full-width">
+                    <input matInput [matDatepicker]="picker1" matTooltip="Enter Joining Date" formControlName="DateOfJoin" placeholder="Choose Joining Date">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                  <mat-error>
+                    <span *ngIf="!employeeForm.get('DateOfJoin').value && employeeForm.get('DateOfJoin').touched"></span>
+                  </mat-error>
+
+                </td>
+                <td class="tbl1">
+                  <mat-form-field class="demo-full-width">
+                    <input matTooltip="Enter Skills" formControlName="Skills" matInput placeholder="Skills">
+                  </mat-form-field>
+                  <mat-error>
+                    <span *ngIf="!employeeForm.get('Skills').value && employeeForm.get('Skills').touched"></span>
+                  </mat-error>
+                </td>
+                <td class="tbl1">
+              
+                </td>
+              </tr>
+
+
+
+              <tr>
+                <td></td>
+                <td  class="content-center">
+                  <button type="submit" mat-raised-button color="accent" matTooltip="Click Submit Button" [disabled]="!employeeForm.valid">Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="reset" mat-raised-button color="accent" matTooltip="Click Reset Button" (click)="resetForm()">Reset</button>
+                </td>
+                <td>
+                  <p *ngIf="dataSaved" style="color:rgb(0, 128, 0);font-size:20px;font-weight:bold" Class="success" align="left">
+                    {{massage}}
+                  </p>
+                </td>
+              </tr>
+            </table>
+<br><br>
+      <table class="table" >
+          <tr ngclass="btn-primary">
+            <th class="tbl2">Employee Name</th>
+            <th class="tbl2">Date Of Birth</th>
+            <th class="tbl2">Date Of Joining</th>
+            <th class="tbl2">Is Active</th>
+            <th class="tbl2">Address</th>
+            <th class="tbl2">Department</th>
+            <th class="tbl2">Skills</th>
+            <th class="tbl2">Role</th>
+            <th class="tbl2">Edit</th>
+            <th class="tbl2">Delete</th>
+          </tr>
+          <tr *ngFor="let employee of allEmployees | async">
+            <td class="tbl2">{{employee.EmpName}}</td>
+            <td class="tbl2">{{employee.DateOfBirth | date }}</td>
+            <td class="tbl2">{{employee.DateOfJoin | date}}</td>
+            <td class="tbl2">{{employee.IsActive ==0? 'False' : 'True'}}</td>
+            <td class="tbl2">{{employee.Address}}</td>
+            <td class="tbl2">{{employee.Dept}}</td>
+
+            <td class="tbl2">{{employee.Skills}}</td>
+            <td class="tbl2">
+             
+              <span *ngIf="employee.Role=='0'">None</span>
+              <span *ngIf="employee.Role=='1'">Software Developer</span>
+              <span *ngIf="employee.Role=='2'">HR Manager</span>
+              <span *ngIf="employee.Role=='3'">SQL Develpoer</span>
+
+            
+            
+            </td>
+            <td class="tbl2">
+              <button type="button" class="btn btn-info" matTooltip="Click Edit Button" (click)="loadEmployeeToEdit(employee.EmpId)">Edit</button>
+            </td>
+            <td class="tbl2">
+              <button type="button" class="btn btn-danger" matTooltip="Click Delete Button" (click)="deleteEmployee(employee.EmpId)">Delete</button>
+            </td>
+          </tr>
+
+        </table>
+
+    </form>
+  </mat-card-content>
+</mat-card>
+
+</div>
